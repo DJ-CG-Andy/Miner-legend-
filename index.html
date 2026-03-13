@@ -14,7 +14,7 @@
         html, body { 
             background: #000; color: #fff; font-family: 'Courier New', Courier, monospace; 
             overflow: hidden; height: 100%; width: 100%; user-select: none;
-            overscroll-behavior: none;
+            overscroll-behavior: none; touch-action: manipulation;
         }
 
         #game { 
@@ -49,14 +49,20 @@
             background: #e74c3c; color: white; border-radius: 50%; font-size: 20px; font-weight: bold;
             justify-content: center; align-items: center; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
+        #minimap-explore-label {
+            display: none; position: absolute; bottom: 8px; left: 0; right: 0;
+            text-align: center; font-size: 13px; font-weight: bold; color: #f1c40f;
+            text-shadow: 1px 1px 0 #000; pointer-events: none;
+        }
         
         #minimap-container.expanded {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 80vw; height: 80vw; max-width: 350px; max-height: 350px;
             border: 4px solid #f1c40f; box-shadow: 0 0 0 100vmax rgba(0,0,0,0.8);
-            border-radius: 12px; z-index: 9999;
+            border-radius: 12px; z-index: 9999; overflow: visible;
         }
         #minimap-container.expanded #minimap-close { display: flex; }
+        #minimap-container.expanded #minimap-explore-label { display: block; }
 
         /* 遊戲網格 */
         #grid-box { flex-grow: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; background: #000; }
@@ -198,6 +204,7 @@
             <div id="minimap-container" onclick="toggleMinimap()">
                 <canvas id="minimap" width="30" height="30"></canvas>
                 <div id="minimap-close" onclick="toggleMinimap(event)">×</div>
+                <div id="minimap-explore-label">採礦 0%</div>
             </div>
             <div id="explore-pct">探索 0%</div>
         </div>
@@ -206,10 +213,10 @@
         
         <div id="ctrls">
             <div class="joy">
-                <div class="j-btn" style="grid-area: u" onpointerdown="startMove(0,-1, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-up"></span></div>
-                <div class="j-btn" style="grid-area: l" onpointerdown="startMove(-1,0, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-left"></span></div>
-                <div class="j-btn" style="grid-area: r" onpointerdown="startMove(1,0, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-right"></span></div>
-                <div class="j-btn" style="grid-area: d" onpointerdown="startMove(0,1, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-down"></span></div>
+                <div class="j-btn" style="grid-area: u" ontouchstart="e_mv(event,0,-1,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,0,-1,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-up"></span></div>
+                <div class="j-btn" style="grid-area: l" ontouchstart="e_mv(event,-1,0,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,-1,0,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-left"></span></div>
+                <div class="j-btn" style="grid-area: r" ontouchstart="e_mv(event,1,0,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,1,0,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-right"></span></div>
+                <div class="j-btn" style="grid-area: d" ontouchstart="e_mv(event,0,1,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,0,1,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-down"></span></div>
             </div>
             <div class="side-btns">
                 <button class="round-btn" onclick="openCraft()">裝備</button>
@@ -589,6 +596,8 @@
         let pct = floorOreTotal > 0 ? Math.floor(((floorOreTotal - totalOre) / floorOreTotal) * 100) : 0;
         let el = document.getElementById('explore-pct');
         if(el) el.innerText = `採礦 ${pct}%`;
+        let lbl = document.getElementById('minimap-explore-label');
+        if(lbl) lbl.innerText = `採礦進度 ${pct}%`;
     }
 
     function move(dx, dy) {
@@ -1052,6 +1061,16 @@
         document.body.appendChild(popup); setTimeout(()=>popup.remove(), 800);
         document.getElementById('game').classList.add('shake'); setTimeout(()=>document.getElementById('game').classList.remove('shake'), 200);
     }
+    // 方向鍵事件包裝（同時支援手機touch和電腦mouse，避免藍點和雙擊放大）
+    function e_mv(e, dx, dy, btn) {
+        e.preventDefault();
+        startMove(dx, dy, btn);
+    }
+    function e_stop(e, btn) {
+        e.preventDefault();
+        stopMove(btn);
+    }
+
     // WASD 鍵盤控制
     const keyDirs = { w:[0,-1], a:[-1,0], s:[0,1], d:[1,0], arrowup:[0,-1], arrowleft:[-1,0], arrowdown:[0,1], arrowright:[1,0] };
     const fakeBtn = { classList: { add:()=>{}, remove:()=>{} } };
