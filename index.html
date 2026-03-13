@@ -206,10 +206,10 @@
         
         <div id="ctrls">
             <div class="joy">
-                <div class="j-btn" style="grid-area: u" ontouchstart="startMove(0,-1, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-up"></span></div>
-                <div class="j-btn" style="grid-area: l" ontouchstart="startMove(-1,0, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-left"></span></div>
-                <div class="j-btn" style="grid-area: r" ontouchstart="startMove(1,0, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-right"></span></div>
-                <div class="j-btn" style="grid-area: d" ontouchstart="startMove(0,1, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-down"></span></div>
+                <div class="j-btn" style="grid-area: u" onpointerdown="startMove(0,-1, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-up"></span></div>
+                <div class="j-btn" style="grid-area: l" onpointerdown="startMove(-1,0, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-left"></span></div>
+                <div class="j-btn" style="grid-area: r" onpointerdown="startMove(1,0, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-right"></span></div>
+                <div class="j-btn" style="grid-area: d" onpointerdown="startMove(0,1, this); event.preventDefault();" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-down"></span></div>
             </div>
             <div class="side-btns">
                 <button class="round-btn" onclick="openCraft()">裝備</button>
@@ -1052,6 +1052,24 @@
         document.body.appendChild(popup); setTimeout(()=>popup.remove(), 800);
         document.getElementById('game').classList.add('shake'); setTimeout(()=>document.getElementById('game').classList.remove('shake'), 200);
     }
+    // WASD 鍵盤控制
+    const keyDirs = { w:[0,-1], a:[-1,0], s:[0,1], d:[1,0], arrowup:[0,-1], arrowleft:[-1,0], arrowdown:[0,1], arrowright:[1,0] };
+    const fakeBtn = { classList: { add:()=>{}, remove:()=>{} } };
+    const keysDown = {};
+    document.addEventListener('keydown', e => {
+        let k = e.key.toLowerCase();
+        if (!keyDirs[k] || keysDown[k]) return;
+        e.preventDefault();
+        keysDown[k] = true;
+        let [dx, dy] = keyDirs[k];
+        startMove(dx, dy, fakeBtn);
+    });
+    document.addEventListener('keyup', e => {
+        let k = e.key.toLowerCase();
+        if (!keyDirs[k]) return;
+        keysDown[k] = false;
+        if (Object.values(keysDown).every(v => !v)) stopMove(fakeBtn);
+    });
 </script>
 </body>
 </html>
