@@ -111,8 +111,8 @@
         /* 控制區 */
         #ctrls { height: 180px; background: #111; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #333; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
         
-        .joy { display: grid; grid-template-areas: ". u ." "l d r"; gap: 8px; touch-action: none; user-select: none; }
-        .j-btn { width: 55px; height: 55px; background: #2c3e50; border: 2px solid #34495e; color: #ecf0f1; display: flex; justify-content: center; align-items: center; font-size: 20px; border-radius: 12px; border-bottom-width: 4px; touch-action: none; cursor: pointer; }
+        .joy { display: grid; grid-template-areas: ". u ." "l . r" ". d ."; gap: 8px; touch-action: none; user-select: none; }
+        .j-btn { width: 55px; height: 55px; background: #2c3e50; border: 2px solid #34495e; display: flex; justify-content: center; align-items: center; border-radius: 12px; border-bottom-width: 4px; touch-action: none; cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
         .j-btn:active, .j-btn.pressed { background: #34495e; border-bottom-width: 2px; transform: translateY(2px); }
         
         .side-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 110px; }
@@ -147,10 +147,10 @@
         .tab-btn.active { border-bottom:2px solid #f1c40f; color:#f1c40f; background:#2a2a2a; }
 
         /* 方向鍵CSS箭頭 */
-        .arrow-up { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 20px solid #ecf0f1; display: inline-block; }
-        .arrow-down { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid #ecf0f1; display: inline-block; }
-        .arrow-left { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-right: 20px solid #ecf0f1; display: inline-block; }
-        .arrow-right { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid #ecf0f1; display: inline-block; }
+        .arrow-up { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 20px solid #ecf0f1; display: block; pointer-events: none; }
+        .arrow-down { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid #ecf0f1; display: block; pointer-events: none; }
+        .arrow-left { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-right: 20px solid #ecf0f1; display: block; pointer-events: none; }
+        .arrow-right { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid #ecf0f1; display: block; pointer-events: none; }
         /* 探索度文字 */
         #explore-pct { position: absolute; top: 80px; right: 6px; font-size: 9px; color: #aaa; font-weight: bold; text-align: center; width: 65px; }
         .dmg-popup { position: absolute; font-weight: bold; font-size: 24px; pointer-events: none; animation: floatUp 0.8s forwards; z-index: 9999; text-shadow: 2px 2px 0 #000; }
@@ -206,10 +206,10 @@
         
         <div id="ctrls">
             <div class="joy">
-                <div class="j-btn" style="grid-area: u" onpointerdown="startMove(0,-1, this)" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-up"></span></div>
-                <div class="j-btn" style="grid-area: l" onpointerdown="startMove(-1,0, this)" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-left"></span></div>
-                <div class="j-btn" style="grid-area: r" onpointerdown="startMove(1,0, this)" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-right"></span></div>
-                <div class="j-btn" style="grid-area: d" onpointerdown="startMove(0,1, this)" onpointerup="stopMove(this)" onpointerleave="stopMove(this)"><span class="arrow-down"></span></div>
+                <div class="j-btn" style="grid-area: u" ontouchstart="startMove(0,-1, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-up"></span></div>
+                <div class="j-btn" style="grid-area: l" ontouchstart="startMove(-1,0, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-left"></span></div>
+                <div class="j-btn" style="grid-area: r" ontouchstart="startMove(1,0, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-right"></span></div>
+                <div class="j-btn" style="grid-area: d" ontouchstart="startMove(0,1, this)" ontouchend="stopMove(this)" ontouchcancel="stopMove(this)"><span class="arrow-down"></span></div>
             </div>
             <div class="side-btns">
                 <button class="round-btn" onclick="openCraft()">裝備</button>
