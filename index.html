@@ -11,6 +11,7 @@
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         
+        * { -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         html, body { 
             background: #000; color: #fff; font-family: 'Courier New', Courier, monospace; 
             overflow: hidden; height: 100%; width: 100%; user-select: none;
@@ -213,10 +214,10 @@
         
         <div id="ctrls">
             <div class="joy">
-                <div class="j-btn" style="grid-area: u" ontouchstart="e_mv(event,0,-1,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,0,-1,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-up"></span></div>
-                <div class="j-btn" style="grid-area: l" ontouchstart="e_mv(event,-1,0,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,-1,0,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-left"></span></div>
-                <div class="j-btn" style="grid-area: r" ontouchstart="e_mv(event,1,0,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,1,0,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-right"></span></div>
-                <div class="j-btn" style="grid-area: d" ontouchstart="e_mv(event,0,1,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,0,1,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><span class="arrow-down"></span></div>
+                <div class="j-btn" style="grid-area: u" ontouchstart="e_mv(event,0,-1,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,0,-1,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><svg width="22" height="22" viewBox="0 0 22 22" style="pointer-events:none"><polygon points="11,2 20,20 2,20" fill="#ecf0f1"/></svg></div>
+                <div class="j-btn" style="grid-area: l" ontouchstart="e_mv(event,-1,0,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,-1,0,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><svg width="22" height="22" viewBox="0 0 22 22" style="pointer-events:none"><polygon points="2,11 20,2 20,20" fill="#ecf0f1"/></svg></div>
+                <div class="j-btn" style="grid-area: r" ontouchstart="e_mv(event,1,0,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,1,0,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><svg width="22" height="22" viewBox="0 0 22 22" style="pointer-events:none"><polygon points="20,11 2,2 2,20" fill="#ecf0f1"/></svg></div>
+                <div class="j-btn" style="grid-area: d" ontouchstart="e_mv(event,0,1,this)" ontouchend="e_stop(event,this)" ontouchcancel="e_stop(event,this)" onmousedown="e_mv(event,0,1,this)" onmouseup="e_stop(event,this)" onmouseleave="e_stop(event,this)"><svg width="22" height="22" viewBox="0 0 22 22" style="pointer-events:none"><polygon points="11,20 2,2 20,2" fill="#ecf0f1"/></svg></div>
             </div>
             <div class="side-btns">
                 <button class="round-btn" onclick="openCraft()">裝備</button>
