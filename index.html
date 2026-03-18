@@ -443,6 +443,7 @@
     }
 
     function generateFloor() {
+<<<<<<< HEAD
         // 如果不是特殊层（每十层的第十层），且之前来过这层，则恢复地图状态
         if (p.floor % 10 !== 0 && floorsData[p.floor]) {
             const savedData = floorsData[p.floor];
@@ -479,6 +480,8 @@
             return;
         }
 
+=======
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
         map = Array(SIZE).fill().map(() => Array(SIZE).fill('s'));
         explored = Array(SIZE).fill().map(() => Array(SIZE).fill(false));
         enemies = []; campfireBuilt = false;
@@ -491,6 +494,7 @@
         }
 
         if (p.floor % 10 === 0) {
+<<<<<<< HEAD
             // 特殊层（10、20、30...）
             for(let y=10; y<=20; y++) for(let x=10; x<=20; x++) map[y][x] = 'empty';
             p.x = 15; p.y = 19;
@@ -511,6 +515,16 @@
                 digY = Math.floor(SIZE/2);
                 p.x = digX; p.y = digY;
             }
+=======
+            for(let y=10; y<=20; y++) for(let x=10; x<=20; x++) map[y][x] = 'empty';
+            p.x = 15; p.y = 19;
+            map[12][15] = 'merchant'; map[15][12] = 'campfire'; map[15][18] = 'stair_down';
+            map[18][15] = 'magic_circle'; // 新增設施位置
+            explored[15][18] = true; 
+        } else {
+            let digX = Math.floor(SIZE/2), digY = Math.floor(SIZE/2);
+            p.x = digX; p.y = digY;
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
             let dugCount = 0; let pathTiles = [];
             let stoneRatio = Math.min(0.95, 0.4 + (p.floor * 0.015));
             for(let y=1; y<SIZE-1; y++){
@@ -530,6 +544,7 @@
                 dugCount++;
             }
             for(let dy=-1; dy<=1; dy++) for(let dx=-1; dx<=1; dx++) map[p.y+dy][p.x+dx] = 'empty';
+<<<<<<< HEAD
             // 放置向下楼梯（蓝色，入口）
             map[digY][digX] = 'stair_down'; explored[digY][digX] = true;
             // 放置向上楼梯（绿色，出口）
@@ -567,6 +582,10 @@
                     map[digY+dy][digX+dx] = 'd';
                 }
             }
+=======
+            map[digY][digX] = 'stair_down'; explored[digY][digX] = true; 
+            for(let dy=-1; dy<=1; dy++) for(let dx=-1; dx<=1; dx++) { if(map[digY+dy][digX+dx] !== 'stair_down') map[digY+dy][digX+dx] = 'd'; }
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
             for(let y=1; y<SIZE-1; y++){
                 for(let x=1; x<SIZE-1; x++){
                     if(map[y][x] === 'empty') continue;
@@ -606,6 +625,17 @@
             }
         }
         for(let i=0; i<SIZE; i++) { map[0][i] = 'w'; map[SIZE-1][i] = 'w'; map[i][0] = 'w'; map[i][SIZE-1] = 'w'; }
+<<<<<<< HEAD
+=======
+        let stairExist = false;
+        for(let y=0; y<SIZE; y++) for(let x=0; x<SIZE; x++) if(map[y][x] === 'stair_down') stairExist = true;
+        if(!stairExist && p.floor % 10 !== 0) {
+            let placed = false;
+            for(let y=2; y<SIZE-2 && !placed; y++) for(let x=2; x<SIZE-2 && !placed; x++) {
+                if(map[y][x] === 'empty' && (Math.abs(x-p.x)>5 || Math.abs(y-p.y)>5)) { map[y][x] = 'stair_down'; explored[y][x] = true; placed = true; }
+            }
+        }
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
         updateUI(); drawView();
         // 計算本層礦石總數
         floorOreTotal = 0;
@@ -634,7 +664,10 @@
                         if(tile.startsWith('o_')) { let ore = getOreData(tile); cell.classList.add('ore'); cell.style.color = ore.c; cell.style.backgroundColor = ore.bg; }
                         else if(tile.startsWith('L')) { cell.classList.add('legend-ore'); cell.style.color = LEGENDS.find(l=>l.id===parseInt(tile.substring(1))).c; }
                         else if(tile === 'stair_down') { cell.classList.add('stair'); }
+<<<<<<< HEAD
                         else if(tile === 'stair_up') { cell.classList.add('stair_up'); }
+=======
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
                         else if(tile === 'magic_circle') { cell.classList.add('empty'); let div = document.createElement('div'); div.className = 'entity magic_circle'; cell.appendChild(div); }
                         else { cell.classList.add(tile); }
                         if (mx === p.x && my === p.y) { let div = document.createElement('div'); div.className = 'entity player'; cell.appendChild(div); }
@@ -654,8 +687,12 @@
         for(let y=0; y<SIZE; y++) for(let x=0; x<SIZE; x++) {
             if(explored[y][x]) {
                 let tile = map[y][x];
+<<<<<<< HEAD
                 if(tile === 'stair_down') ctx.fillStyle = '#00ffff';
                 else if(tile === 'stair_up') ctx.fillStyle = '#2ecc71';
+=======
+                if(tile === 'stair_down') ctx.fillStyle = '#00ffff'; 
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
                 else if(tile === 'merchant' || tile === 'campfire' || tile === 'magic_circle') ctx.fillStyle = '#f1c40f';
                 else if(tile === 'empty') ctx.fillStyle = '#222';
                 else if(tile === 'w' || tile.startsWith('s')) ctx.fillStyle = '#555';
@@ -694,6 +731,7 @@
         else if (tile === 'stair_down') {
             stopMove({classList:{remove:()=>0}});
             showCustomModal("前進下一層", "確定要進入地底更深處嗎？下一層的怪物將會更加強大。", [
+<<<<<<< HEAD
                 {t:"進入深處", f:()=>{
                     // 保存当前层的地图状态（如果不是特殊层）
                     if (p.floor % 10 !== 0) {
@@ -742,6 +780,12 @@
                 ]);
             }
             return;
+=======
+                {t:"進入深處", f:()=>{ p.floor++; generateFloor(); if(p.floor === 5 && !p.recyclerUnlocked){ p.recyclerUnlocked=true; showMsg("新功能解鎖！","抵達第5層！裝備欄位解鎖了【回收裝置】！可以投入礦石抽取藥水。"); } }},
+                {t:"留在本層", f:closeMsg}
+            ]);
+            return;
+>>>>>>> c608c99bd6df0d10167415436eb0ec80d460d874
         } else if (tile === 'merchant') { stopMove({classList:{remove:()=>0}}); openMerchant('sell'); return; } 
         else if (tile === 'campfire') { stopMove({classList:{remove:()=>0}}); handleCampfire(); return; } 
         else if (tile === 'magic_circle') { stopMove({classList:{remove:()=>0}}); handleMagicCircle(); return; } 
